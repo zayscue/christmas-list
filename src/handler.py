@@ -1,10 +1,8 @@
-import pandas as pd
-import numpy as np
-
+import requests
 
 def create_list(event, context):
-  df = pd.DataFrame(np.random.randint(0,100,size=(15, 4)), columns=list('ABCD'))
+  res = requests.get('https://w3schools.com/python/demopage.htm')
   return {
     'statusCode': 200,
-    'body': df.to_json(orient='records')
+    'body': res.text
   }
