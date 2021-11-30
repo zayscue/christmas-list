@@ -9,6 +9,8 @@ python = "^3.8"
 requests = "^2.26.0"
 Flask = "^2.0.2"
 aws-wsgi = "^0.2.7"
+Flask-Inputs = "^0.3.0"
+jsonschema = "^4.2.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
