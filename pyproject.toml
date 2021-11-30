@@ -12,6 +12,7 @@ aws-wsgi = "^0.2.7"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
+python-dotenv = "^0.19.2"
 boto3 = "^1.20.15"
 
 [build-system]
