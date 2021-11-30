@@ -11,6 +11,17 @@ provider "aws" {
 
 data "aws_caller_identity" "current" {}
 
+resource "aws_dynamodb_table" "christmas_list_table" {
+  name = "ChristmasLists"
+  hash_key = "id"
+  billing_mode = "PAY_PER_REQUEST"
+
+  attribute {
+    name = "id"
+    type = "S"
+  }
+}
+
 resource "aws_iam_role" "christmas_list_service_role" {
   name = "christmas_list_service_role"
   assume_role_policy = jsonencode({
@@ -29,6 +40,30 @@ resource "aws_iam_role" "christmas_list_service_role" {
   managed_policy_arns = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
   ]
+
+  inline_policy {
+    name = "christmas_list_service_dynamodb_policy"
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Effect = "Allow",
+          Action = [
+            "dynamodb:BatchGetItem",
+            "dynamodb:GetItem",
+            "dynamodb:Query",
+            "dynamodb:Scan",
+            "dynamodb:BatchWriteItem",
+            "dynamodb:PutItem",
+            "dynamodb:UpdateItem"
+          ],
+          "Resource" = [
+            "${aws_dynamodb_table.christmas_list_table.arn}"
+          ]
+        }
+      ]
+    })
+  }
 }
 
 resource "aws_lambda_layer_version" "christmas_list_service_libs" {
