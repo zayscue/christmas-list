@@ -5,6 +5,14 @@ if [ -d "./dist/layer" ]
 then
     rm -rf ./dist/layer
 fi
+if [ -f "./dist/libs.zip" ]
+then
+    rm ./dist/libs.zip
+fi
+if [ -f "./dist/deploy.zip" ]
+then
+    rm ./dist/deploy.zip
+fi
 if [ -f "./requirements.txt" ]
 then
     rm ./requirements.txt
@@ -19,7 +27,7 @@ cd ../..
 
 # build source code package
 cd src
-zip -r ../dist/deploy.zip .
+zip -r ../dist/deploy.zip . -x ./__pycache__/**\* -x ./__pycache__/\*
 cd ..
 
 # clean up

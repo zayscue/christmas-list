@@ -30,3 +30,5 @@ override.tf.json
 
 dist/
 .npmrc
+.env
+**/__pycache__/**
