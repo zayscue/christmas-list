@@ -27,7 +27,7 @@ cd ../..
 
 # build source code package
 cd src
-zip -r ../dist/deploy.zip . -x ./__pycache__/**\* -x ./__pycache__/\*
+zip -r ../dist/deploy.zip . -x \*__pycache__\* -x ./conftest.py
 cd ..
 
 # clean up

@@ -8,7 +8,7 @@ from flask import (
     request,
     jsonify,
 )
-from create_list_inputs import CreateListInputs
+from inputs.create_list_inputs import CreateListInputs
 
 logging.getLogger().setLevel(logging.INFO)
 db = boto3.resource("dynamodb")
@@ -26,8 +26,9 @@ def index():
 def create_list():
     inputs = CreateListInputs(request)
     if not inputs.validate():
-        return jsonify(success=False, errors=inputs.errors), 400
-    data = request.json
+        app.logger.error("Invalid Create Christmas List Request")
+        return jsonify(errors=inputs.errors), 400
+    data = request.get_json()
     item = {
         "name": data["name"],
         "id": str(uuid.uuid4()),
@@ -35,15 +36,18 @@ def create_list():
     }
     table = db.Table(TABLE_NAME)
     table.put_item(Item=item)
-    app.logger.info("Created new christmas list")
-    return jsonify(item)
+    app.logger.info("Created New Christmas List")
+    return jsonify(item), 201
 
 
 @app.route("/api/christmas-list/<id>", methods=["GET"])
 def get_list(id):
     table = db.Table(TABLE_NAME)
-    item = table.get_item(Key={"id": id})
-    return jsonify(item["Item"])
+    get_item_response = table.get_item(Key={"id": id})
+    if "Item" not in get_item_response:
+        app.logger.error("Christmas List Not Found")
+        return '', 404
+    return jsonify(get_item_response["Item"])
 
 
 def lambda_handler(event, context):
