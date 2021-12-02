@@ -46,7 +46,7 @@ def get_list(id):
     get_item_response = table.get_item(Key={"id": id})
     if "Item" not in get_item_response:
         app.logger.error("Christmas List Not Found")
-        return '', 404
+        return "", 404
     return jsonify(get_item_response["Item"])
 
 

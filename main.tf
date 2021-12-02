@@ -68,7 +68,7 @@ resource "aws_iam_role" "christmas_list_service_role" {
 
 resource "aws_lambda_layer_version" "christmas_list_service_libs" {
   filename   = "./dist/libs.zip"
-  layer_name = "christmas_list_service_libs"
+  layer_name = "christmas-list-service-libs"
   source_code_hash = filebase64sha256("./dist/libs.zip")
 
   compatible_runtimes = ["python3.8"]
